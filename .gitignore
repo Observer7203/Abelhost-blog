@@ -1,0 +1,12 @@
+/vendor/
+
+/templates_c/*
+!/templates_c/.gitkeep
+
+# креды
+/config.php
+
+# macOS
+.DS_Store
+
+/references/

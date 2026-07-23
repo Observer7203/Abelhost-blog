@@ -1,0 +1,8 @@
+{
+    "require": {
+        "smarty/smarty": "^5.8"
+    },
+    "require-dev": {
+        "scssphp/scssphp": "^2.1"
+    }
+}

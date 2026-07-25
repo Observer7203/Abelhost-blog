@@ -51,4 +51,23 @@ class Article {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    public static function incrementViews(int $id): void {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE articles SET views = views + 1 WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public static function getCategories(int $id): array {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare(
+            "SELECT c.* FROM categories c
+            JOIN article_category ac ON c.id = ac.category_id
+            WHERE ac.article_id = :id"
+        );
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

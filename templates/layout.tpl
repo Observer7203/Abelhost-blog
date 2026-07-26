@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body>
     {include file="components/header.tpl"}
@@ -18,6 +18,5 @@
 
     {include file="components/footer.tpl"}
 
-    <script src="/assets/js/main.js"></script>
 </body>
 </html>

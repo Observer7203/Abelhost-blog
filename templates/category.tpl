@@ -1,5 +1,6 @@
 {extends file="layout.tpl"}
 {block name="content"}
+    <a href="/" class="back-link">← Back</a>
     <h1>{$category.title}</h1>
     <p>{$category.description}</p>
 
@@ -8,15 +9,21 @@
         <a href="?sort=views&page=1">By views</a>
     </div>
 
-    {foreach $articles as $article}
+    <div class="category__articles">
+        {foreach $articles as $article}
         <a href="/article/{$article.id}">
             <div class="card">
-                <img src="{$article.image}">
+                <div class="card__image"><img src="{$article.image}"></div>
                 <h3>{$article.title}</h3>
                 <p>{$article.description}</p>
+                <div class="card__meta">
+                    <span><i class="icon icon--calendar"></i>{$article.created_at|date_format:"%b %d, %Y"}</span>
+                    <span><i class="icon icon--eye"></i>{$article.views}</span>
+                </div>
             </div>
         </a>
-    {/foreach}
+        {/foreach}
+    </div>
 
     {if $totalPages > 1}
         <div class="pagination">

@@ -22,22 +22,37 @@ class Article {
         return $article ?: null;
         }
 
-    public static function getByCategory(int $id, ?int $limit = null): array {
+    public static function getByCategory(int $id, ?int $limit = null, string $sort = 'date', int $offset = 0): array {
         $pdo = Database::getConnection();
-
+        $sortType = [
+            'date' => 'a.created_at',
+            'views' => 'a.views',
+        ];
+        $orderBy = $sortType[$sort] ?? 'a.created_at';
         $sql = "SELECT a.* FROM articles a
                 JOIN article_category ac ON a.id = ac.article_id
                 WHERE ac.category_id = :category_id
-                ORDER BY a.created_at DESC";
+                ORDER BY {$orderBy} DESC";
 
         if ($limit !== null) {
-            $sql .= " LIMIT " . (int) $limit;  
+            $sql .= " LIMIT " . (int) $limit;
+            $sql .= " OFFSET " . (int) $offset; 
         }
 
-        $stmt = $pdo->prepare($sql);        
+        $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':category_id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function countByCategory(int $id): int {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare(
+            "SELECT COUNT(*) FROM article_category WHERE category_id = :category_id"
+        );
+        $stmt->bindParam(':category_id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
     }
 
     public static function getSimilar(int $id, int $limit = 3): array {

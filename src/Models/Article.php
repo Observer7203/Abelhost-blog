@@ -22,18 +22,24 @@ class Article {
         return $article ?: null;
         }
 
-    public static function getByCategory(int $id): array {
+    public static function getByCategory(int $id, ?int $limit = null): array {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare(
-            "SELECT a.* FROM articles a
-            JOIN article_category ac ON a.id = ac.article_id
-            WHERE ac.category_id = :category_id
-            ORDER BY a.created_at DESC"
-        );
+
+        $sql = "SELECT a.* FROM articles a
+                JOIN article_category ac ON a.id = ac.article_id
+                WHERE ac.category_id = :category_id
+                ORDER BY a.created_at DESC";
+
+        if ($limit !== null) {
+            $sql .= " LIMIT " . (int) $limit;  
+        }
+
+        $stmt = $pdo->prepare($sql);        
         $stmt->bindParam(':category_id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
     public static function getSimilar(int $id, int $limit = 3): array {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare(

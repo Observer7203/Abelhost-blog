@@ -1,0 +1,8 @@
+/vendor/
+/.git/
+/templates_c/*
+!/templates_c/.gitkeep
+/references/
+/scss/
+config.php
+.DS_Store

@@ -2,11 +2,11 @@
 
 return [
     'db' => [
-        'host' => 'localhost',
-        'port' => 3306,
-        'dbname' => 'abelhost_blog',
-        'user' => 'root',
-        'password' => 'password',
+        'host' => getenv('DB_HOST') ?: '127.0.0.1',
+        'port' => getenv('DB_PORT') ?: 3306,
+        'dbname' => getenv('DB_NAME') ?: 'your_database',
+        'user' => getenv('DB_USER') ?: 'your_user',
+        'password' => getenv('DB_PASS') ?: 'your_password',
         'charset' => 'utf8mb4',
     ]
 ];

@@ -1,0 +1,33 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: abelhost_blog
+      DB_USER: observer
+      DB_PASS: observer
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: abelhost_blog
+      MYSQL_USER: observer
+      MYSQL_PASSWORD: observer
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "observer", "-pobserver"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db_data:
